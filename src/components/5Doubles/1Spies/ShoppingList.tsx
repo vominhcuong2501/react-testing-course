@@ -2,17 +2,18 @@ import { useState } from 'react'
 
 export function ShoppingList(props: {
     groceries: string[]
-    selectItem: Function
+    selectItem: (item: string) => void
 }) {
+    const [items, setItems] = useState<{
+        text: string,
+        checked: boolean
+    }[]>(props.groceries.map((item) => ({ text: item, checked: false })))
+
     // Check for duplicates in groceries array
     const hasDuplicates = props.groceries.length !== new Set(props.groceries).size;
     if (hasDuplicates) {
         return <p style={{ color: 'red' }}>List has duplicates!</p>
     }
-    const [items, setItems] = useState<{
-        text: string,
-        checked: boolean
-    }[]>(props.groceries.map((item) => ({ text: item, checked: false })))
 
     function handleItemChecked(item: string) {
         setItems((prevItems) => {
